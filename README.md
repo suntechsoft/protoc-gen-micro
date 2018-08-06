@@ -76,6 +76,54 @@ Create a service client with your micro client
 client := proto.NewGreeterService("greeter", service.Client())
 ```
 
+### Endpoint
+
+Add a micro API endpoint which routes directly to an RPC method
+
+```
+syntax = "proto3";
+
+import "google/api/annotations.proto";
+
+service Greeter {
+	rpc Hello(Request) returns (Response) {
+		option (google.api.http) = {
+			post: "/hello"
+		};	
+	}
+}
+
+message Request {
+	string name = 1;
+}
+
+message Response {
+	string msg = 1;
+}
+```
+
+
+The proto generates a `RegisterGreeterHandler` function with a [go-api.Endpoint](https://godoc.org/github.com/micro/go-api#Endpoint). 
+
+```go
+func RegisterGreeterHandler(s server.Server, hdlr GreeterHandler, opts ...server.HandlerOption) error {
+	type greeter interface {
+		Hello(ctx context.Context, in *Request, out *Response) error
+	}
+	type Greeter struct {
+		greeter
+	}
+	h := &greeterHandler{hdlr}
+	opts = append(opts, api.WithEndpoint(&api.Endpoint{
+		Name:    "Greeter.Hello",
+		Path:    []string{"/hello"},
+		Method:  []string{"POST"},
+		Handler: "rpc",
+	}))
+	return s.Handle(s.NewHandler(&Greeter{h}, opts...))
+}
+```
+
 ## LICENSE
 
 protoc-gen-micro is a liberal reuse of protoc-gen-go hence we maintain the original license 
