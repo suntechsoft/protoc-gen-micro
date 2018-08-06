@@ -80,6 +80,11 @@ client := proto.NewGreeterService("greeter", service.Client())
 
 Add a micro API endpoint which routes directly to an RPC method
 
+Usage:
+
+1. Clone `github.com/googleapis/googleapis` to use this feature as it requires http annotations.
+2. The protoc command must include `-I$GOPATH/src/github.com/googleapis/googleapis` for the annotations import.
+
 ```
 syntax = "proto3";
 
@@ -101,7 +106,6 @@ message Response {
 	string msg = 1;
 }
 ```
-
 
 The proto generates a `RegisterGreeterHandler` function with a [go-api.Endpoint](https://godoc.org/github.com/micro/go-api#Endpoint). 
 
