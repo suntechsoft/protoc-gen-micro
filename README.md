@@ -91,11 +91,12 @@ syntax = "proto3";
 import "google/api/annotations.proto";
 
 service Greeter {
-	rpc Hello(Request) returns (Response) {
-		option (google.api.http) = {
-			post: "/hello"
-		};	
-	}
+-	rpc Hello(Request) returns (Response) {}
++	rpc Hello(Request) returns (Response) {
++		option (google.api.http) = {
++			post: "/hello"
++		};	
++	}
 }
 
 message Request {
@@ -118,13 +119,14 @@ func RegisterGreeterHandler(s server.Server, hdlr GreeterHandler, opts ...server
 		greeter
 	}
 	h := &greeterHandler{hdlr}
-	opts = append(opts, api.WithEndpoint(&api.Endpoint{
-		Name:    "Greeter.Hello",
-		Path:    []string{"/hello"},
-		Method:  []string{"POST"},
-		Handler: "rpc",
-	}))
-	return s.Handle(s.NewHandler(&Greeter{h}, opts...))
+-	s.Handle(s.NewHandler(&Greeter{h}, opts...))
++	opts = append(opts, api.WithEndpoint(&api.Endpoint{
++		Name:    "Greeter.Hello",
++		Path:    []string{"/hello"},
++		Method:  []string{"POST"},
++		Handler: "rpc",
++	}))
++	return s.Handle(s.NewHandler(&Greeter{h}, opts...))
 }
 ```
 
