@@ -85,7 +85,7 @@ Usage:
 1. Clone `github.com/googleapis/googleapis` to use this feature as it requires http annotations.
 2. The protoc command must include `-I$GOPATH/src/github.com/googleapis/googleapis` for the annotations import.
 
-```
+```diff
 syntax = "proto3";
 
 import "google/api/annotations.proto";
@@ -110,7 +110,7 @@ message Response {
 
 The proto generates a `RegisterGreeterHandler` function with a [go-api.Endpoint](https://godoc.org/github.com/micro/go-api#Endpoint). 
 
-```go
+```diff
 func RegisterGreeterHandler(s server.Server, hdlr GreeterHandler, opts ...server.HandlerOption) error {
 	type greeter interface {
 		Hello(ctx context.Context, in *Request, out *Response) error
