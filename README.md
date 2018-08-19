@@ -128,6 +128,15 @@ func RegisterGreeterHandler(s server.Server, hdlr GreeterHandler, opts ...server
 +	}))
 +	return s.Handle(s.NewHandler(&Greeter{h}, opts...))
 }
+
+### Errors
+
+If you see an error about `protoc-gen-micro` not being found or executable, it's likely your environment may not be configured correctly. If you've already installed `protoc`, `protoc-gen-go`, and `protoc-gen-micro` ensure you've included `$GOPATH/bin` in your `PATH`.
+
+Alternative specify the Go plugin paths as arguments to the `protoc` command
+
+```
+protoc --plugin=protoc-gen-go=$GOPATH/bin/protoc-gen-go --plugin=protoc-gen-micro=$GOPATH/bin/protoc-gen-micro --proto_path=$GOPATH/src:. --micro_out=. --go_out=. greeter.proto
 ```
 
 ## LICENSE
