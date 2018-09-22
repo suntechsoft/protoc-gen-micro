@@ -40,7 +40,7 @@ func (g *micro) Name() string {
 // They may vary from the final path component of the import path
 // if the name is used by other packages.
 var (
-	apiPkg string
+	apiPkg     string
 	contextPkg string
 	clientPkg  string
 	serverPkg  string
@@ -217,8 +217,8 @@ func (g *micro) generateService(file *generator.FileDescriptor, service *pb.Serv
 	g.P("h := &", unexport(servName), "Handler{hdlr}")
 	for _, method := range service.Method {
 		g.generateEndpoint(servName, method)
-		g.P("return s.Handle(s.NewHandler(&", servName, "{h}, opts...))")
 	}
+	g.P("return s.Handle(s.NewHandler(&", servName, "{h}, opts...))")
 	g.P("}")
 	g.P()
 
